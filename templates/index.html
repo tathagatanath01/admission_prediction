@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>GRE Admission Prediction</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
+
+    <style>
+        body {
+            min-height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
+            url("https://images.unsplash.com/photo-1524995997946-a1c2e315a42f");
+            background-size: cover;
+        }
+        .card { background: rgba(255,255,255,0.95); border-radius: 15px; }
+        .result-box { font-size: 22px; font-weight: bold; }
+    </style>
+</head>
+
+<body>
+<div class="container">
+<div class="row justify-content-center align-items-center" style="min-height:100vh;">
+<div class="col-lg-8">
+
+<div class="card shadow-lg">
+<div class="card-header bg-primary text-white text-center">
+    <h2>GRE Admission Prediction</h2>
+</div>
+
+<div class="card-body">
+<form>
+
+<div class="form-row">
+    <div class="form-group col-md-6">
+        <label>GRE Score</label>
+        <input type="number" class="form-control" name="GRE_Score" required>
+    </div>
+    <div class="form-group col-md-6">
+        <label>TOEFL Score</label>
+        <input type="number" class="form-control" name="TOEFL_Score" required>
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="form-group col-md-6">
+        <label>University Rating</label>
+        <input type="number" class="form-control" name="University_Rating" min="1" max="5" required>
+    </div>
+    <div class="form-group col-md-6">
+        <label>CGPA</label>
+        <input type="number" step="0.01" class="form-control" name="CGPA" required>
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="form-group col-md-6">
+        <label>SOP</label>
+        <input type="number" class="form-control" name="SOP" min="1" max="5" required>
+    </div>
+    <div class="form-group col-md-6">
+        <label>LOR</label>
+        <input type="number" class="form-control" name="LOR" min="1" max="5" required>
+    </div>
+</div>
+
+<div class="form-group">
+    <label>Research Experience</label>
+    <select class="form-control" name="Research">
+        <option value="1">Yes</option>
+        <option value="0">No</option>
+    </select>
+</div>
+
+<button type="button" class="btn btn-primary btn-block btn-lg"
+        onclick="sendData()">Predict</button>
+
+</form>
+
+<hr>
+<div class="text-center result-box">
+    <span id="prediction"></span>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+function sendData() {
+    let fd = new FormData(document.querySelector('form'));
+    let xhr = new XMLHttpRequest();
+
+    xhr.open("POST", "/predict", true);
+    document.getElementById("prediction").innerHTML = "Predicting...";
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            document.getElementById("prediction").innerHTML =
+                "Chance of Admit: " + xhr.responseText + " %";
+        }
+    };
+    xhr.send(fd);
+}
+</script>
+
+</body>
+</html>
